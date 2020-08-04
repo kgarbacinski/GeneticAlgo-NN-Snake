@@ -1,9 +1,17 @@
 from typing import *
 from Population import *
 
-class Environment:
-    no_generations = 0
-    populations = List[Population]
 
+class Environment:
     def __init__(self, no_populations: int, pop_size: int):
-        self.populations = [Population(pop_size)] * no_populations
+        self.no_generations = 0
+        self.populations = List[Population]
+        self.populations = [[Population(pop_size)] for _ in range(no_populations)]
+
+    def is_pop_extinct(self):
+        for pop in self.populations:
+            if not pop.is_extinct():
+                return False
+        return True
+    def run_genetic(self):
+        pass

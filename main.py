@@ -1,35 +1,36 @@
 import pygame
-from Environment import Environment
+from Environment import *
 
-display = None
-env = None
-
+DISPLAY = pygame.display.set_mode((800, 500))
+ENV = None
 
 def setup():
-    global display, env
+    global DISPLAY, ENV
 
     # Window
     pygame.init()
-    display = pygame.display.set_mode((800, 500))
     pygame.display.set_caption("Genetic Snake")
-    display.fill(pygame.Color("WHITE"))
+    DISPLAY.fill(pygame.Color("WHITE"))
     pygame.display.update()
 
     # Classes
-    env = Environment()
+    ENV = Environment(1, 10000)
+
+    draw()
 
 
 def draw():
     show_info()
 
+
 def show_info():
-    global display, env
+    global DISPLAY, ENV
 
     pygame.font.init()
     my_font = pygame.font.SysFont('Arial', 20)
-    text_surf = my_font.render("Generation: " + str(env.no_generations), False, pygame.Color("Black"))
-    display.blit(text_surf, (600, 100))
-    pygame.draw.line(display, pygame.Color("BLACK"), (500, 0), (500, 500))
+    text_surf = my_font.render("Generation: " + str(ENV.no_generations), False, pygame.Color("Black"))
+    DISPLAY.blit(text_surf, (600, 100))
+    pygame.draw.line(DISPLAY, pygame.Color("BLACK"), (500, 0), (500, 500))
     pygame.display.update()
 
 
@@ -37,7 +38,11 @@ def main():
     setup()
     is_running = True
     while is_running:
-        draw()
+        if not ENV.is_pop_extinct(): # check if is any snake in population alive
+            pass
+        else: # if not, run sexing
+            ENV.run_genetic()
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 is_running = False
