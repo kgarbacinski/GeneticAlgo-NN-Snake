@@ -14,9 +14,7 @@ def setup():
     pygame.display.update()
 
     # Classes
-    ENV = Environment(1, 10000)
-
-    draw()
+    ENV = Environment(1, 2000)
 
 
 def draw():
@@ -38,9 +36,10 @@ def main():
     setup()
     is_running = True
     while is_running:
-        if not ENV.is_pop_extinct(): # check if is any snake in population alive
-            pass
-        else: # if not, run sexing
+        draw()
+        if not ENV.is_pop_extinct(): # if any snake is alive
+            ENV.update()
+        else: # none snake is alive
             ENV.run_genetic()
 
         for event in pygame.event.get():
