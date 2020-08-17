@@ -1,7 +1,8 @@
 import pygame
 from Environment import *
+from constants import *
 
-DISPLAY = pygame.display.set_mode((800, 500))
+DISPLAY = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 ENV = None
 
 def setup():
@@ -20,7 +21,6 @@ def setup():
 def draw():
     show_info()
 
-
 def show_info():
     global DISPLAY, ENV
 
@@ -29,7 +29,7 @@ def show_info():
     text_surf = my_font.render("Generation: " + str(ENV.no_generations), False, pygame.Color("Black"))
     DISPLAY.blit(text_surf, (600, 100))
     pygame.draw.line(DISPLAY, pygame.Color("BLACK"), (500, 0), (500, 500))
-    pygame.display.update()
+    pygame.display.update(PLAYABLE_AREA_WIDTH, 0, 300, WINDOW_HEIGHT)
 
 
 def main():
@@ -45,6 +45,7 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 is_running = False
+
 
 if __name__ == "__main__":
     main()

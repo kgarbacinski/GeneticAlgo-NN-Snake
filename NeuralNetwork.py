@@ -23,4 +23,5 @@ class NeuralNetwork:
         self.weights_hh.randomize()
         self.weights_ho.randomize()
 
-
+    def get_output(self, input: list):
+        pass
