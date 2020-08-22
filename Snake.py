@@ -1,10 +1,12 @@
 from typing import *
-from constants import INPUT_NODES, HIDDEN_NODES, OUTPUT_NODES, VELOCITY, PLAYABLE_AREA_HEIGHT, PLAYABLE_AREA_WIDTH
+from constants import INPUT_NODES, HIDDEN_NODES, OUTPUT_NODES, VELOCITY, PLAYABLE_AREA_HEIGHT, PLAYABLE_AREA_WIDTH, \
+    LEFT_DOWN_VECTOR, LEFT_UP_VECTOR, LEFT_VECTOR, RIGHT_DOWN_VECTOR, RIGHT_UP_VECTOR, RIGHT_VECTOR, UP_VECTOR, DOWN_VECTOR
 from NeuralNetwork import *
 from main import DISPLAY
 import pygame
 from Vector import Vector
 from Apple import *
+from Vision import *
 
 
 class Snake:
@@ -28,6 +30,9 @@ class Snake:
         self.tail.append(Vector(self.x_start - 10, self. y_start)) # Add first segment of body
         self.len += 3 # Increase a body length
 
+        # Vision for input
+        self.visions = List[Vision]
+
         # Get DNA as snake's brain
         self.DNA = NeuralNetwork(INPUT_NODES, HIDDEN_NODES, OUTPUT_NODES)
         self.apple = Apple()
@@ -37,18 +42,48 @@ class Snake:
     def fitness(self):
         pass
 
-    def check_dir(self, direction: Vector):
+    def check_dir_and_get_vision(self, direction: Vector) -> Vision:
+        vision = Vision()
+
         head_buff = Vector(self.head.x, self.head.y)
+        distance = 0
+
         # Looks in 8 direction and checks where's food, wall and body's segment
-        while not (head_buff.x < 0 or head_buff.y < 0 or head_buff.x >= PLAYABLE_AREA_WIDTH or head_buff.y >= PLAYABLE_AREA_HEIGHT):
+        while head_buff.x > 0 or head_buff.y > 0 or head_buff.x <= PLAYABLE_AREA_WIDTH \
+                or head_buff.y <= PLAYABLE_AREA_HEIGHT:
+            if head_buff.x == self.apple.pos.x and head_buff.y == self.apple.pos.y:
+                vision.is_apple = True
+
+            if self.is_on_tail(head_buff.x, head_buff.y):
+                vision.tail_dist = 1 / distance
 
             head_buff.x += direction.x
             head_buff.y += direction.y
+            distance += 1
 
+        vision.wall_dist = 1 / distance
+
+        return vision
+
+    def is_on_tail(self, x: int, y: int)->bool:
+        for segment in self.tail:
+            if segment.x == x and segment.y == y:
+                return True
+
+        return False
+
+    # Get input to determine v
     def set_input(self):
-        self.check_dir(Vector(-10, 0))
+        self.visions[0] = self.check_dir_and_get_vision(LEFT_VECTOR)
+        self.visions[1] = self.check_dir_and_get_vision(UP_VECTOR)
+        self.visions[2] = self.check_dir_and_get_vision(RIGHT_VECTOR)
+        self.visions[3] = self.check_dir_and_get_vision(DOWN_VECTOR)
+        self.visions[4] = self.check_dir_and_get_vision(LEFT_UP_VECTOR)
+        self.visions[5] = self.check_dir_and_get_vision(RIGHT_UP_VECTOR)
+        self.visions[6] = self.check_dir_and_get_vision(RIGHT_DOWN_VECTOR)
+        self.visions[7] = self.check_dir_and_get_vision(LEFT_DOWN_VECTOR)
 
-
+    # Set v from output
     def set_velocity(self):
         pass
 
