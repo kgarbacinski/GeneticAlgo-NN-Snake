@@ -23,5 +23,9 @@ class NeuralNetwork:
         self.weights_hh.randomize()
         self.weights_ho.randomize()
 
-    def get_output(self, input: list):
+    def get_output(self, input_layer_array: list):
+        input_layer_matrix = Matrix.one_column_matrix_from_array(input_layer_array)
+        input_layer_matrix.add_input_bias() # add 1 to the end of inputs' layer
+
+    def array_to_matrix(self, no_rows, no_cols):
         pass

@@ -85,7 +85,7 @@ class Snake:
 
     # Set v from output
     def set_velocity(self):
-        pass
+        self.DNA.array_to_matrix(None, 1)
 
     def check_if_dies(self) -> bool:
         if self.head.x + self.vel.x >= PLAYABLE_AREA_WIDTH or self.head.x + self.vel.x <= 0 or\
