@@ -31,7 +31,8 @@ class Snake:
         self.len += 3 # Increase a body length
 
         # Vision for input
-        self.visions = List[Vision]
+        self.visions = [Vision() for _ in range(8)]
+        self.visions_array = []
 
         # Get DNA as snake's brain
         self.DNA = NeuralNetwork(INPUT_NODES, HIDDEN_NODES, OUTPUT_NODES)
@@ -42,6 +43,13 @@ class Snake:
     def fitness(self):
         pass
 
+    def is_on_tail(self, x: int, y: int)->bool:
+        for segment in self.tail:
+            if segment.x == x and segment.y == y:
+                return True
+
+        return False
+
     def check_dir_and_get_vision(self, direction: Vector) -> Vision:
         vision = Vision()
 
@@ -49,10 +57,9 @@ class Snake:
         distance = 0
 
         # Looks in 8 direction and checks where's food, wall and body's segment
-        while head_buff.x > 0 or head_buff.y > 0 or head_buff.x <= PLAYABLE_AREA_WIDTH \
-                or head_buff.y <= PLAYABLE_AREA_HEIGHT:
+        while 0 < head_buff.x <= PLAYABLE_AREA_WIDTH and 0 < head_buff.y <= PLAYABLE_AREA_HEIGHT:
             if head_buff.x == self.apple.pos.x and head_buff.y == self.apple.pos.y:
-                vision.is_apple = True
+                vision.is_apple = 1
 
             if self.is_on_tail(head_buff.x, head_buff.y):
                 vision.tail_dist = 1 / distance
@@ -65,13 +72,6 @@ class Snake:
 
         return vision
 
-    def is_on_tail(self, x: int, y: int)->bool:
-        for segment in self.tail:
-            if segment.x == x and segment.y == y:
-                return True
-
-        return False
-
     # Get input to determine v
     def set_input(self):
         self.visions[0] = self.check_dir_and_get_vision(LEFT_VECTOR)
@@ -83,9 +83,21 @@ class Snake:
         self.visions[6] = self.check_dir_and_get_vision(RIGHT_DOWN_VECTOR)
         self.visions[7] = self.check_dir_and_get_vision(LEFT_DOWN_VECTOR)
 
+        self.visions_array = self.visions_to_array()
+
+    def visions_to_array(self):
+        array = []
+        for vision in self.visions:
+            array.append(vision.is_apple)
+            array.append(vision.tail_dist)
+            array.append(vision.wall_dist)
+
+        return array
+
     # Set v from output
     def set_velocity(self):
-        self.DNA.array_to_matrix(None, 1)
+        output_array = self.DNA.get_output(self.visions_array)
+        import pdb;pdb.set_trace()
 
     def check_if_dies(self) -> bool:
         if self.head.x + self.vel.x >= PLAYABLE_AREA_WIDTH or self.head.x + self.vel.x <= 0 or\

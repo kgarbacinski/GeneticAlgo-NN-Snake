@@ -16,7 +16,7 @@ class Environment:
 
     def update(self):
         for pop in self.populations:
-            pop.update()
+            pop.update_alive()
 
     def run_genetic(self):
         # Runs when whole population is dead
