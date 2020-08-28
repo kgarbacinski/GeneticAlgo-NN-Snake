@@ -5,6 +5,7 @@ from constants import *
 DISPLAY = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 ENV = None
 
+
 def setup():
     global DISPLAY, ENV
 
@@ -21,18 +22,20 @@ def setup():
 def draw():
     show_info()
 
+
 def show_info():
     global DISPLAY, ENV
 
-    pygame.font.init()
     my_font = pygame.font.SysFont('Arial', 20)
     text_surf = my_font.render("Generation: " + str(ENV.no_generations), False, pygame.Color("Black"))
     DISPLAY.blit(text_surf, (600, 100))
+
     pygame.draw.line(DISPLAY, pygame.Color("BLACK"), (500, 0), (500, 500))
-    pygame.display.update(PLAYABLE_AREA_WIDTH, 0, 300, WINDOW_HEIGHT)
+    pygame.display.update(PLAYABLE_AREA_WIDTH, 0, WINDOW_WIDTH - PLAYABLE_AREA_WIDTH, WINDOW_HEIGHT)
 
 
 def main():
+    clock = pygame.time.Clock()
     setup()
     is_running = True
     while is_running:
@@ -41,6 +44,8 @@ def main():
             ENV.update()
         else: # none snake is alive
             ENV.run_genetic()
+
+        pygame.time.delay(50)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

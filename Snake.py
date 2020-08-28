@@ -1,27 +1,27 @@
 from typing import *
-from constants import INPUT_NODES, HIDDEN_NODES, OUTPUT_NODES, VELOCITY, PLAYABLE_AREA_HEIGHT, PLAYABLE_AREA_WIDTH, \
+from constants import INPUT_NODES, HIDDEN_NODES, OUTPUT_NODES, PLAYABLE_AREA_HEIGHT, PLAYABLE_AREA_WIDTH, \
     LEFT_DOWN_VECTOR, LEFT_UP_VECTOR, LEFT_VECTOR, RIGHT_DOWN_VECTOR, RIGHT_UP_VECTOR, RIGHT_VECTOR, UP_VECTOR, DOWN_VECTOR
 from NeuralNetwork import *
 from main import DISPLAY
 import pygame
 from Vector import Vector
-from Apple import *
-from Vision import *
+from Apple import Apple
+from Vision import Vision
 
 
 class Snake:
     def __init__(self, x_pos: int, y_pos: int):
         # Snake attributes
-        self.x_start = x_pos
-        self.y_start = y_pos
-        self.len = 4
+        self.x_start = PLAYABLE_AREA_WIDTH / 2
+        self.y_start = PLAYABLE_AREA_HEIGHT / 2
+        self.len = 1
         self.is_alive = True
         self.time_left = 200
         self.life_time = 0
 
         # Create vector of position and velocity
         self.head = Vector(self.x_start, self.y_start) # actual position
-        self.vel = Vector(VELOCITY, 0)
+        self.vel = Vector(RIGHT_VECTOR.x, RIGHT_VECTOR.y)
 
         # Init snake with 4 body segments
         self.tail = []
@@ -43,7 +43,7 @@ class Snake:
     def fitness(self):
         pass
 
-    def is_on_tail(self, x: int, y: int)->bool:
+    def is_on_tail(self, x: int, y: int) -> bool:
         for segment in self.tail:
             if segment.x == x and segment.y == y:
                 return True
@@ -52,9 +52,14 @@ class Snake:
 
     def check_dir_and_get_vision(self, direction: Vector) -> Vision:
         vision = Vision()
+        distance = 0
 
         head_buff = Vector(self.head.x, self.head.y)
-        distance = 0
+
+        # Move once
+        head_buff.x += direction.x
+        head_buff.y += direction.y
+        distance += 1
 
         # Looks in 8 direction and checks where's food, wall and body's segment
         while 0 < head_buff.x <= PLAYABLE_AREA_WIDTH and 0 < head_buff.y <= PLAYABLE_AREA_HEIGHT:
@@ -97,16 +102,38 @@ class Snake:
     # Set v from output
     def set_velocity(self):
         output_array = self.DNA.get_output(self.visions_array)
-        import pdb;pdb.set_trace()
+        max_idx = self.find_max_val_index(output_array)
+
+        # Set direction
+        if max_idx == 0 and self.vel.x != RIGHT_VECTOR.x and self.vel.y != RIGHT_VECTOR.y:
+            self.vel.x = LEFT_VECTOR.x
+            self.vel.y = LEFT_VECTOR.y
+        elif max_idx == 1 and self.vel.x != DOWN_VECTOR.x and self.vel.y != DOWN_VECTOR.y:
+            self.vel.x = UP_VECTOR.x
+            self.vel.y = UP_VECTOR.y
+        elif max_idx == 2 and self.vel.x != LEFT_VECTOR.x and self.vel.y != LEFT_VECTOR.y:
+            self.vel.x = RIGHT_VECTOR.x
+            self.vel.y = RIGHT_VECTOR.y
+        elif max_idx == 3 and self.vel.x != UP_VECTOR.x and self.vel.y != UP_VECTOR.y:
+            self.vel.x = DOWN_VECTOR.x
+            self.vel.y = DOWN_VECTOR.y
+
+    @staticmethod
+    def find_max_val_index(array: list) -> int:
+        return array.index(max(array))
 
     def check_if_dies(self) -> bool:
-        if self.head.x + self.vel.x >= PLAYABLE_AREA_WIDTH or self.head.x + self.vel.x <= 0 or\
-           self.head.y + self.vel.y <= 0 or self.head.y + self.vel.y >= PLAYABLE_AREA_HEIGHT:
+        if self.head.x + self.vel.x >= PLAYABLE_AREA_WIDTH or self.head.x + self.vel.x < 0 or\
+           self.head.y + self.vel.y < 0 or self.head.y + self.vel.y >= PLAYABLE_AREA_HEIGHT:
             return True
+
+        return False
 
     def check_if_eats(self):
         if self.head.x + self.vel.x == self.apple.pos.x and self.head.y + self.vel.y == self.apple.pos.y:
             return True
+
+        return False
 
     def grow(self):
         new_segment = Vector(self.head.x, self.head.y)
@@ -130,7 +157,7 @@ class Snake:
         self.life_time += 1
         self.time_left -= 1
 
-        if self.check_if_dies() or self.time_left < 0:
+        if self.check_if_dies() or self.is_on_tail(self.head.x + self.vel.x, self.head.y + self.vel.y) or self.time_left < 0:
             self.is_alive = False
             return
 
@@ -138,12 +165,20 @@ class Snake:
             self.eat()
 
         # Move the snake's head
+        self.clear_snake()
         self.tail.pop(0)
-        self.tail.insert(len(self.tail), Vector(self.head.x, self.head.y))
-        self.head = Vector(self.head.x + self.vel.x, self.head.y + self.vel.y)
+        self.tail.append(Vector(self.head.x, self.head.y))
+        self.head.x += self.vel.x
+        self.head.y += self.vel.y
+
+    def clear_snake(self):
+        for segment in self.tail:
+            pygame.draw.rect(DISPLAY, pygame.Color("White"), (segment.x, segment.y, 10, 10))
+
+        pygame.draw.rect(DISPLAY, pygame.Color("White"), (self.head.x, self.head.y, 10, 10))
 
     def show(self):
-        DISPLAY.fill(pygame.Color("White"))
+        #DISPLAY.fill(pygame.Color("White"))
 
         # Show whole snake's body
         for segment in self.tail:
@@ -151,7 +186,8 @@ class Snake:
 
         # Draw head
         pygame.draw.rect(DISPLAY, pygame.Color("Black"), (self.head.x, self.head.y, 10, 10))
-        pygame.display.update(self.head.x, self.head.y, 10, 10)
+
+        pygame.display.update(0, 0, PLAYABLE_AREA_WIDTH, PLAYABLE_AREA_HEIGHT)
 
         # Draw apple
         self.apple.show()

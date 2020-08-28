@@ -4,11 +4,14 @@ from constants import WINDOW_HEIGHT, WINDOW_WIDTH, PLAYABLE_AREA_HEIGHT, PLAYABL
 import pygame
 from pygame import Rect
 from main import DISPLAY
+import math
 
 
 class Apple:
     def __init__(self):
-        self.pos = Vector(randint(1, PLAYABLE_AREA_WIDTH - 10), randint(1, PLAYABLE_AREA_HEIGHT - 10))
+        x_pos = randint(0, math.floor((PLAYABLE_AREA_WIDTH - 1) / 10)) * 10
+        y_pos = randint(0, math.floor((WINDOW_HEIGHT - 1) / 10)) * 10
+        self.pos = Vector(x_pos, y_pos)
 
     def show(self):
         pygame.draw.rect(DISPLAY, pygame.Color("Red"), (self.pos.x, self.pos.y, 10, 10))
