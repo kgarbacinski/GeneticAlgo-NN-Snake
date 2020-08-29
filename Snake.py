@@ -10,7 +10,7 @@ from Vision import Vision
 
 
 class Snake:
-    def __init__(self, x_pos: int, y_pos: int):
+    def __init__(self):
         # Snake attributes
         self.x_start = PLAYABLE_AREA_WIDTH / 2
         self.y_start = PLAYABLE_AREA_HEIGHT / 2
@@ -38,8 +38,6 @@ class Snake:
         # Get DNA as snake's brain
         self.DNA = NeuralNetwork(INPUT_NODES, HIDDEN_NODES, OUTPUT_NODES)
         self.apple = Apple()
-
-        self.show()
 
     # Based on len and life_time
     def calc_score(self):

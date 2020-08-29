@@ -16,7 +16,7 @@ def setup():
     pygame.display.update()
 
     # Classes
-    ENV = Environment(1, 5)
+    ENV = Environment(1, 1000)
 
 
 def draw():
@@ -43,8 +43,6 @@ def main():
             ENV.update()
         else: # none snake is alive
             ENV.run_genetic()
-
-        pygame.time.delay(50)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
