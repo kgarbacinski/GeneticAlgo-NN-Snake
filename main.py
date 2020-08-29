@@ -16,7 +16,7 @@ def setup():
     pygame.display.update()
 
     # Classes
-    ENV = Environment(1, 1000)
+    ENV = Environment(1, 10)
 
 
 def draw():
@@ -27,8 +27,8 @@ def show_info():
     global DISPLAY, ENV
 
     my_font = pygame.font.SysFont('Arial', 20)
-    text_surf = my_font.render("Generation: " + str(ENV.no_generations), False, pygame.Color("Black"))
-    DISPLAY.blit(text_surf, (600, 100))
+    text_surf_gen = my_font.render("Generation: " + str(ENV.no_generations), False, pygame.Color("Black"))
+    DISPLAY.blit(text_surf_gen, (600, 100))
 
     pygame.draw.line(DISPLAY, pygame.Color("BLACK"), (500, 0), (500, 500))
     pygame.display.update(PLAYABLE_AREA_WIDTH, 0, WINDOW_WIDTH - PLAYABLE_AREA_WIDTH, WINDOW_HEIGHT)

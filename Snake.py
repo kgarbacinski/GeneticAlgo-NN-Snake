@@ -168,7 +168,6 @@ class Snake:
 
         if self.check_if_eats():
             self.eat()
-            print()
         else:
             self.tail.pop(0)
             self.tail.append(Vector(self.head.x, self.head.y))
