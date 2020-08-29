@@ -16,7 +16,7 @@ def setup():
     pygame.display.update()
 
     # Classes
-    ENV = Environment(1, 2000)
+    ENV = Environment(1, 5)
 
 
 def draw():
@@ -35,7 +35,6 @@ def show_info():
 
 
 def main():
-    clock = pygame.time.Clock()
     setup()
     is_running = True
     while is_running:

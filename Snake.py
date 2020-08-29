@@ -18,6 +18,7 @@ class Snake:
         self.is_alive = True
         self.time_left = 200
         self.life_time = 0
+        self.score = 0
 
         # Create vector of position and velocity
         self.head = Vector(self.x_start, self.y_start) # actual position
@@ -40,8 +41,12 @@ class Snake:
 
         self.show()
 
-    def fitness(self):
-        pass
+    # Based on len and life_time
+    def calc_score(self):
+        if self.len > 10:
+            self.score = pow(self.life_time, 2) * pow(2, 10) * (self.len - 9)
+        else:
+            self.score = pow(self.life_time, 2) * pow(2, self.len)
 
     def is_on_tail(self, x: int, y: int) -> bool:
         for segment in self.tail:
@@ -161,13 +166,15 @@ class Snake:
             self.is_alive = False
             return
 
+        self.clear_snake()
+
         if self.check_if_eats():
             self.eat()
+            print()
+        else:
+            self.tail.pop(0)
+            self.tail.append(Vector(self.head.x, self.head.y))
 
-        # Move the snake's head
-        self.clear_snake()
-        self.tail.pop(0)
-        self.tail.append(Vector(self.head.x, self.head.y))
         self.head.x += self.vel.x
         self.head.y += self.vel.y
 

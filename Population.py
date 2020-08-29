@@ -22,6 +22,6 @@ class Population:
                 snake.show()
         # TODO: set current best for showing only one snake
 
-    def fitness(self):
+    def calc_fitness(self):
         for snake in self.snakes:
-            snake.fitness() # calculate fitness for each snake
+            snake.calc_score() # calculate fitness for each snake

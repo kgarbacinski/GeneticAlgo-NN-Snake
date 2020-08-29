@@ -21,4 +21,4 @@ class Environment:
     def run_genetic(self):
         # Runs when whole population is dead
         for pop in self.populations:
-            pop.fitness() # calculate fitness for each snake in each population
+            pop.calc_fitness() # calculate fitness for each snake in each population
