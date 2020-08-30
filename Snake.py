@@ -1,3 +1,4 @@
+from __future__ import annotations
 from typing import *
 from constants import INPUT_NODES, HIDDEN_NODES, OUTPUT_NODES, PLAYABLE_AREA_HEIGHT, PLAYABLE_AREA_WIDTH, \
     LEFT_DOWN_VECTOR, LEFT_UP_VECTOR, LEFT_VECTOR, RIGHT_DOWN_VECTOR, RIGHT_UP_VECTOR, RIGHT_VECTOR, UP_VECTOR, DOWN_VECTOR
@@ -180,6 +181,11 @@ class Snake:
             pygame.draw.rect(DISPLAY, pygame.Color("White"), (segment.x, segment.y, 10, 10))
 
         pygame.draw.rect(DISPLAY, pygame.Color("White"), (self.head.x, self.head.y, 10, 10))
+
+    def do_crossover(self, other_snake: Snake) -> Snake:
+        child = Snake()
+        child.DNA = self.DNA.do_crossover(other_snake.DNA)
+        return child
 
     def show(self):
         #DISPLAY.fill(pygame.Color("White"))

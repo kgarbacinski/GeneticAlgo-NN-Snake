@@ -71,6 +71,8 @@ class Population:
             parent_first = self.select_from_fitness()
             parent_second = self.select_from_fitness()
 
+            child = parent_first.do_crossover(parent_second) # made some sex here : )
+
     def calc_score_sum(self):
         self.score_sum = 0
         for idx, snake in enumerate(self.snakes):

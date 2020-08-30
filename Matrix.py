@@ -51,6 +51,12 @@ class Matrix:
     def add_bias(self):
         self.matrix.append([1])
 
+    def do_crossover(self):
+        child = Matrix(self.no_rows, self.no_cols)
+
+        end_row = int(random.random(self.no_rows))
+        end_column = int(random.random(self.no_cols))
+
     def to_array(self):
         array = [[[] for _ in range(self.no_cols)] for _ in range(self.no_rows)]
 

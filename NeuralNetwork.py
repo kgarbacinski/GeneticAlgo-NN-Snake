@@ -1,3 +1,4 @@
+from __future__ import annotations
 from Matrix import *
 from math import e
 
@@ -43,6 +44,12 @@ class NeuralNetwork:
         outputs = ho_weights_output.apply_activation()
 
         return outputs.to_array()
+
+    def do_crossover(self, other_DNA: NeuralNetwork):
+        child_DNA = NeuralNetwork(self.input_nodes, self.hidden_nodes, self.output_ndoes)
+        child_DNA.weights_ih = self.weights_ih.do_crossover(other_DNA.weights_ih)
+        child_DNA.weights_hh = self.weights_hh.do_crossover(other_DNA.weights_ih)
+        child_DNA.weights_ho = self.weights_hh.do_crossover(other_DNA.weights_ho)
 
     def array_to_matrix(self, no_rows, no_cols):
         pass
