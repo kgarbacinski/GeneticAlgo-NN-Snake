@@ -8,7 +8,7 @@ import pygame
 from Vector import Vector
 from Apple import Apple
 from Vision import Vision
-
+from copy import copy
 
 class Snake:
     def __init__(self):
@@ -112,13 +112,13 @@ class Snake:
         if max_idx == 0 and self.vel.x != RIGHT_VECTOR.x and self.vel.y != RIGHT_VECTOR.y:
             self.vel.x = LEFT_VECTOR.x
             self.vel.y = LEFT_VECTOR.y
-        elif max_idx == 1 and self.vel.x != DOWN_VECTOR.x and self.vel.y != DOWN_VECTOR.y:
+        elif max_idx == 1: # and self.vel.x != DOWN_VECTOR.x and self.vel.y != DOWN_VECTOR.y:
             self.vel.x = UP_VECTOR.x
             self.vel.y = UP_VECTOR.y
-        elif max_idx == 2 and self.vel.x != LEFT_VECTOR.x and self.vel.y != LEFT_VECTOR.y:
+        elif max_idx == 2: #and self.vel.x != LEFT_VECTOR.x and self.vel.y != LEFT_VECTOR.y:
             self.vel.x = RIGHT_VECTOR.x
             self.vel.y = RIGHT_VECTOR.y
-        elif max_idx == 3 and self.vel.x != UP_VECTOR.x and self.vel.y != UP_VECTOR.y:
+        elif max_idx == 3: #and self.vel.x != UP_VECTOR.x and self.vel.y != UP_VECTOR.y:
             self.vel.x = DOWN_VECTOR.x
             self.vel.y = DOWN_VECTOR.y
 
@@ -166,6 +166,7 @@ class Snake:
             return
 
         self.clear_snake()
+        pygame.draw.rect(DISPLAY, pygame.Color("White"), (self.head.x, self.head.y, 10, 10))
 
         if self.check_if_eats():
             self.eat()
@@ -182,10 +183,24 @@ class Snake:
 
         pygame.draw.rect(DISPLAY, pygame.Color("White"), (self.head.x, self.head.y, 10, 10))
 
+
+    def clear_apples(self):
+        pygame.draw.rect(DISPLAY, pygame.Color("White"), (self.apple.pos.x, self.apple.pos.y, 10, 10))
+
     def do_crossover(self, other_snake: Snake) -> Snake:
-        child = Snake()
-        child.DNA = self.DNA.do_crossover(other_snake.DNA)
-        return child
+        child_snake = Snake()
+        child_snake.DNA = self.DNA.do_crossover(other_snake.DNA)
+
+        return child_snake
+
+    def mutate(self, mutation_rate):
+        self.DNA.mutate(mutation_rate)
+
+    def clone(self):
+        clone = Snake()
+        clone.DNA = copy(self.DNA)
+        clone.is_alive = True
+        return clone
 
     def show(self):
         #DISPLAY.fill(pygame.Color("White"))

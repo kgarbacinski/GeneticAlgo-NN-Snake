@@ -17,7 +17,7 @@ class Matrix:
     def calc_dot_product(self, matrix_b: Matrix) -> Matrix:
         product = Matrix(self.no_rows, matrix_b.no_cols)
 
-        for i in range(product.no_rows):
+        for i in range(self.no_rows):
             for j in range(product.no_cols):
                 sum = 0
                 for k in range(self.no_cols):
@@ -51,11 +51,29 @@ class Matrix:
     def add_bias(self):
         self.matrix.append([1])
 
-    def do_crossover(self):
-        child = Matrix(self.no_rows, self.no_cols)
+    def do_crossover(self, other_matrix: Matrix) -> Matrix:
+        child_matrix = Matrix(self.no_rows, self.no_cols)
 
-        end_row = int(random.random(self.no_rows))
-        end_column = int(random.random(self.no_cols))
+        end_row = int(random.uniform(0, self.no_rows - 1))
+        end_column = int(random.uniform(0, self.no_cols - 1))
+
+        for i in range(self.no_rows):
+            for j in range(self.no_cols):
+                if i < end_row or (i == end_row and j <= end_column):
+                    child_matrix.matrix[i][j] = self.matrix[i][j]
+                else:
+                    child_matrix.matrix[i][j] = other_matrix.matrix[i][j]
+
+        return child_matrix
+
+    def mutate(self, mutation_rate):
+        for i in range(self.no_rows):
+            for j in range(self.no_cols):
+                rand_value = random.random()
+
+                if rand_value < mutation_rate:
+                    # uniform method
+                    self.matrix[i][j] += random.uniform(-1, 1)
 
     def to_array(self):
         array = [[[] for _ in range(self.no_cols)] for _ in range(self.no_rows)]

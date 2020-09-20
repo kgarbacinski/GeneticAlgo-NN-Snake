@@ -10,7 +10,7 @@ import math
 class Apple:
     def __init__(self):
         x_pos = randint(0, math.floor((PLAYABLE_AREA_WIDTH - 1) / 10)) * 10
-        y_pos = randint(0, math.floor((WINDOW_HEIGHT - 1) / 10)) * 10
+        y_pos = randint(0, math.floor((PLAYABLE_AREA_HEIGHT - 1) / 10)) * 10
         self.pos = Vector(x_pos, y_pos)
 
     def show(self):
