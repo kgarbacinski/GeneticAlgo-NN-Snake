@@ -18,4 +18,4 @@ place it into the next generation and crossover/mutate the other snakes as well
 - As said before, a NN has been created from scratch, therefore it was necessary to apply process of calculation a matrix dot product, applying activation (sigmoid) function etc.
 
 # Strategy
-As the snake's living time and his tail is getting longer, the snake's score is getting higher.  
+As the snake's living time and his tail is getting longer, the snake's score is getting higher. Score is computed from formula: score = life_time ^ 2 * 2 ^ (tail_length)  
