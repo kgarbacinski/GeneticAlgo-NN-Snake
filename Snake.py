@@ -66,7 +66,7 @@ class Snake:
         distance += 1
 
         # Looks in 8 direction and checks where's food, wall and body's segment
-        while 0 < head_buff.x <= PLAYABLE_AREA_WIDTH and 0 < head_buff.y <= PLAYABLE_AREA_HEIGHT:
+        while 0 <= head_buff.x <= PLAYABLE_AREA_WIDTH and 0 <= head_buff.y <= PLAYABLE_AREA_HEIGHT:
             if head_buff.x == self.apple.pos.x and head_buff.y == self.apple.pos.y:
                 vision.is_apple = 1
 
