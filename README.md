@@ -5,8 +5,8 @@ That's a self-teaching Snake game made with genetic algorithm and own-implemente
 
 # Game Screenshots
 - Generation 3:
-![Gen 3](http://url/to/img.png)
-
+![Gen 3](https://github.com/kgarbacinski/GeneticAlgo-NN-Snake/blob/master/Gen%203.PNG)
+![Gen 4](https://github.com/kgarbacinski/GeneticAlgo-NN-Snake/blob/master/Gen%2070.PNG)
 
 # Concepts
 - NN's been made with 2 hidden layers (each 18 nodes), input layer's 24 nodes and the output one contains 4 nodes (each one is the snake's move direction) 
