@@ -29,12 +29,12 @@ class Population:
                 snake.set_velocity() # determine v based on output
                 snake.move()
 
-                if self.snakes[0].is_alive and idx == 0:
-                    self.snakes[0].show()
-                    self.best_snake_len = self.snakes[0].len
+                if idx == 0 and snake.is_alive:
+                    snake.show()
+                    self.best_snake_len = snake.len
 
         # after each tour, find the temp best one
-        #self.calc_curr_best_idx()
+        self.calc_curr_best_idx()
         # TODO: set current best for showing only one snake
 
     def calc_score(self):
@@ -53,9 +53,6 @@ class Population:
         if not self.snakes[self.curr_best_idx].is_alive:# or max_len > self.snakes[self.curr_best_idx].len + 5:
             self.curr_best_idx = max_idx
 
-        if max_len > self.best_snake_len:
-            self.best_snake_len = max_len
-
     def set_global_best_snake(self):
         max_score = 0
         max_idx = 0
@@ -71,7 +68,7 @@ class Population:
         next_snakes = []
 
         self.set_global_best_snake()
-        next_snakes.append(self.global_best_snake.clone())
+        next_snakes.append(self.global_best_snake)
 
         self.calc_score_sum()
         self.calc_fitnesses()

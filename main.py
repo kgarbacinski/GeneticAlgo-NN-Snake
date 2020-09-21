@@ -62,7 +62,7 @@ def main():
         else: # none snake is alive
             ENV.run_genetic()
 
-        clock.tick(10)
+        clock.tick(60)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

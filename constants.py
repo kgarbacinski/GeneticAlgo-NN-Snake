@@ -2,11 +2,12 @@ from Vector import *
 
 POP_SIZE = 500 # the higher, the kinda best computer you have to have
 POPS_NUMBER = 1
+MUTATION_RATE = 0.01
 
 INPUT_NODES = 24
 HIDDEN_NODES = 18
 OUTPUT_NODES = 4
-MUTATION_RATE = 0.01
+
 PLAYABLE_AREA_WIDTH = 400
 PLAYABLE_AREA_HEIGHT = 400
 WINDOW_WIDTH = 800

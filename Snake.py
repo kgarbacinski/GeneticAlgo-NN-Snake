@@ -112,13 +112,13 @@ class Snake:
         if max_idx == 0 and self.vel.x != RIGHT_VECTOR.x and self.vel.y != RIGHT_VECTOR.y:
             self.vel.x = LEFT_VECTOR.x
             self.vel.y = LEFT_VECTOR.y
-        elif max_idx == 1: # and self.vel.x != DOWN_VECTOR.x and self.vel.y != DOWN_VECTOR.y:
+        elif max_idx == 1 and self.vel.x != DOWN_VECTOR.x and self.vel.y != DOWN_VECTOR.y:
             self.vel.x = UP_VECTOR.x
             self.vel.y = UP_VECTOR.y
-        elif max_idx == 2: #and self.vel.x != LEFT_VECTOR.x and self.vel.y != LEFT_VECTOR.y:
+        elif max_idx == 2 and self.vel.x != LEFT_VECTOR.x and self.vel.y != LEFT_VECTOR.y:
             self.vel.x = RIGHT_VECTOR.x
             self.vel.y = RIGHT_VECTOR.y
-        elif max_idx == 3: #and self.vel.x != UP_VECTOR.x and self.vel.y != UP_VECTOR.y:
+        elif max_idx == 3 and self.vel.x != UP_VECTOR.x and self.vel.y != UP_VECTOR.y:
             self.vel.x = DOWN_VECTOR.x
             self.vel.y = DOWN_VECTOR.y
 
