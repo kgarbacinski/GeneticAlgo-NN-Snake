@@ -3,6 +3,11 @@
 # Introduction
 That's a self-teaching Snake game made with genetic algorithm and own-implemented MultiLayer Neural Network. 
 
+# Game Screenshots
+- Generation 3:
+![Gen 3](http://url/to/img.png)
+
+
 # Concepts
 - NN's been made with 2 hidden layers (each 18 nodes), input layer's 24 nodes and the output one contains 4 nodes (each one is the snake's move direction) 
 - Input layer is a set of "visions" in each 8 directions (left, up, right, down and diagonally ones)
