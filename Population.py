@@ -14,7 +14,7 @@ class Population:
         self.curr_best_idx = 0 # idx of the best snake that should be shown on the board
         self.global_best_snake = self.snakes[0] # init with random snake
         self.mutation_rate = MUTATION_RATE
-        self.best_len = 4
+        self.best_snake_len = 4
 
     def is_extinct(self) -> bool:
         for snake in self.snakes:
@@ -31,9 +31,10 @@ class Population:
 
                 if self.snakes[0].is_alive and idx == 0:
                     self.snakes[0].show()
+                    self.best_snake_len = self.snakes[0].len
 
         # after each tour, find the temp best one
-        self.calc_curr_best_idx()
+        #self.calc_curr_best_idx()
         # TODO: set current best for showing only one snake
 
     def calc_score(self):
@@ -52,8 +53,8 @@ class Population:
         if not self.snakes[self.curr_best_idx].is_alive:# or max_len > self.snakes[self.curr_best_idx].len + 5:
             self.curr_best_idx = max_idx
 
-        if max_len > self.best_len:
-            self.best_len = max_len
+        if max_len > self.best_snake_len:
+            self.best_snake_len = max_len
 
     def set_global_best_snake(self):
         max_score = 0
@@ -85,7 +86,7 @@ class Population:
 
         self.snakes = next_snakes[:]
         self.no_generations += 1
-
+        self.best_snake_len = 4
 
 
     def calc_score_sum(self):

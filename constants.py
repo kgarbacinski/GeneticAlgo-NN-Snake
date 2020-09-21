@@ -1,5 +1,8 @@
 from Vector import *
 
+POP_SIZE = 500 # the higher, the kinda best computer you have to have
+POPS_NUMBER = 1
+
 INPUT_NODES = 24
 HIDDEN_NODES = 18
 OUTPUT_NODES = 4

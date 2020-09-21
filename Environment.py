@@ -1,11 +1,11 @@
 from typing import *
 from Population import *
-
+from main import CLOCK
 
 class Environment:
     def __init__(self, no_populations: int, pop_size: int):
         self.no_generations = 0
-        self.best_len = 4
+        self.best_snake_len = 4
         self.populations = List[Population]
         self.populations = [Population(pop_size) for _ in range(no_populations)]
 
@@ -18,6 +18,8 @@ class Environment:
     def update(self):
         for pop in self.populations:
             pop.update_alive()
+            self.best_snake_len = pop.best_snake_len
+
 
     def run_genetic(self):
         # Runs when whole population is dead
@@ -26,4 +28,3 @@ class Environment:
             pop.calc_score() # calculate fitness for each snake in each population
             pop.do_natural_selection()
             self.no_generations += 1
-            self.best_len = pop.best_len
