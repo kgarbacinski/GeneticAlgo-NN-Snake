@@ -11,15 +11,11 @@ class Window:
         self.is_running = True
 
     def setup(self):
-        global DISPLAY, ENV, CLOCK
-
-        # Window
         pygame.init()
         pygame.display.set_caption("Genetic Snake")
         DISPLAY.fill(pygame.Color("WHITE"))
         pygame.display.update()
 
-        # Classes
         ENV = Environment(POPS_NUMBER, POP_SIZE)
         CLOCK = pygame.time.Clock()
 
@@ -34,8 +30,6 @@ class Window:
         pygame.draw.rect(DISPLAY, pygame.Color("White"), (x + 3 * diff, y, 10, 15))
 
     def show_info(self):
-        global DISPLAY, ENV
-
         self.clear_text(590, 105, 5)
         self.clear_text(550, 135, 10)
 
