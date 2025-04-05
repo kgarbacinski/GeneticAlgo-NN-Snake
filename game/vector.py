@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 
-
-@dataclass(unsafe_hash=False)
+@dataclass
 class Vector:
     x: int = 0
     y: int = 0

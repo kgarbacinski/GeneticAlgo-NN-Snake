@@ -1,19 +1,23 @@
-from Vector import *
+from game.vector import Vector
 
-POP_SIZE = 500 # the higher, the kinda best computer you have to have
+# Genetic Algorithm Constants
+POP_SIZE = 500
 POPS_NUMBER = 1
 MUTATION_RATE = 0.01
 
+# Neural Network Constants
 INPUT_NODES = 24
 HIDDEN_NODES = 18
 OUTPUT_NODES = 4
 
+# Game Area Constants
 PLAYABLE_AREA_WIDTH = 400
 PLAYABLE_AREA_HEIGHT = 400
 WINDOW_WIDTH = 800
 WINDOW_HEIGHT = 500
+APPLE_SIZE = 10
 
-# Vectors for input
+# Direction Vectors
 LEFT_VECTOR = Vector(-10, 0)
 RIGHT_VECTOR = Vector(10, 0)
 UP_VECTOR = Vector(0, -10)
