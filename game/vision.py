@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+
 @dataclass
 class Vision:
     wall_dist: float = 0.0

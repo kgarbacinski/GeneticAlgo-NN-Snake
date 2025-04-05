@@ -3,6 +3,7 @@ from game.snake import Snake
 import random
 from config.constants import MUTATION_RATE
 
+
 class Population:
     def __init__(self, pop_size: int):
         self.no_generations = 1

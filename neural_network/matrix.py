@@ -3,8 +3,10 @@ from typing import List
 import random
 import math
 
+
 def sigmoid_fun(x: float) -> float:
     return 1 / (1 + math.exp(-x))
+
 
 class Matrix:
     def __init__(self, no_rows: int, no_cols: int):
@@ -18,7 +20,10 @@ class Matrix:
         product = Matrix(self.no_rows, matrix_b.no_cols)
         for i in range(self.no_rows):
             for j in range(product.no_cols):
-                product.matrix[i][j] = sum(self.matrix[i][k] * matrix_b.matrix[k][j] for k in range(self.no_cols))
+                product.matrix[i][j] = sum(
+                    self.matrix[i][k] * matrix_b.matrix[k][j]
+                    for k in range(self.no_cols)
+                )
         return product
 
     def apply_activation(self) -> Matrix:
@@ -55,7 +60,9 @@ class Matrix:
                     self.matrix[i][j] += random.uniform(-1, 1)
 
     def to_array(self) -> List[float]:
-        return [self.matrix[i][j] for i in range(self.no_rows) for j in range(self.no_cols)]
+        return [
+            self.matrix[i][j] for i in range(self.no_rows) for j in range(self.no_cols)
+        ]
 
     def from_array(self, array: List[float]):
         for i in range(self.no_rows):

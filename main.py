@@ -1,8 +1,9 @@
 import pygame
 from genetic_algorithm.environment import Environment
-from config.constants import WINDOW_WIDTH, WINDOW_HEIGHT, POPS_NUMBER, POP_SIZE
+from config.constants import WINDOW_WIDTH, WINDOW_HEIGHT, POPS_NUMBER, POP_SIZE, PLAYABLE_AREA_WIDTH, PLAYABLE_AREA_HEIGHT
 
 DISPLAY = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+
 
 class Window:
     def __init__(self):
@@ -27,14 +28,26 @@ class Window:
         self.clear_text(590, 105, 5)
         self.clear_text(550, 135, 10)
 
-        my_font = pygame.font.SysFont('Arial', 20)
-        text_surf_gen = my_font.render(f"Generation: {self.env.no_generations}", False, pygame.Color("Black"))
+        my_font = pygame.font.SysFont("Arial", 20)
+        text_surf_gen = my_font.render(
+            f"Generation: {self.env.no_generations}", False, pygame.Color("Black")
+        )
         DISPLAY.blit(text_surf_gen, (500, 100))
-        text_surf_len = my_font.render(f"Score: {self.env.best_snake_len}", False, pygame.Color("Black"))
+        text_surf_len = my_font.render(
+            f"Score: {self.env.best_snake_len}", False, pygame.Color("Black")
+        )
         DISPLAY.blit(text_surf_len, (500, 130))
 
-        pygame.draw.line(DISPLAY, pygame.Color("BLACK"), (PLAYABLE_AREA_WIDTH, 0), (PLAYABLE_AREA_WIDTH, PLAYABLE_AREA_HEIGHT))
-        pygame.display.update(PLAYABLE_AREA_WIDTH, 0, WINDOW_WIDTH - PLAYABLE_AREA_WIDTH, WINDOW_HEIGHT)
+        pygame.draw.line(
+            DISPLAY,
+            pygame.Color("BLACK"),
+            (PLAYABLE_AREA_WIDTH, 0),
+            (PLAYABLE_AREA_WIDTH, PLAYABLE_AREA_HEIGHT),
+        )
+        pygame.display.update(
+            PLAYABLE_AREA_WIDTH, 0, WINDOW_WIDTH - PLAYABLE_AREA_WIDTH, WINDOW_HEIGHT
+        )
+
 
 def main():
     win = Window()
@@ -52,6 +65,7 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 win.is_running = False
+
 
 if __name__ == "__main__":
     main()

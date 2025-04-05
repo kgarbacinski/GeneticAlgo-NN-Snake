@@ -1,13 +1,27 @@
 from __future__ import annotations
 from typing import List
-from config.constants import INPUT_NODES, HIDDEN_NODES, OUTPUT_NODES, PLAYABLE_AREA_HEIGHT, PLAYABLE_AREA_WIDTH, \
-    LEFT_DOWN_VECTOR, LEFT_UP_VECTOR, LEFT_VECTOR, RIGHT_DOWN_VECTOR, RIGHT_UP_VECTOR, RIGHT_VECTOR, UP_VECTOR, DOWN_VECTOR
+from config.constants import (
+    INPUT_NODES,
+    HIDDEN_NODES,
+    OUTPUT_NODES,
+    PLAYABLE_AREA_HEIGHT,
+    PLAYABLE_AREA_WIDTH,
+    LEFT_DOWN_VECTOR,
+    LEFT_UP_VECTOR,
+    LEFT_VECTOR,
+    RIGHT_DOWN_VECTOR,
+    RIGHT_UP_VECTOR,
+    RIGHT_VECTOR,
+    UP_VECTOR,
+    DOWN_VECTOR,
+)
 from neural_network.neural_network import NeuralNetwork
 from game.vector import Vector
 from game.apple import Apple
 from game.vision import Vision
 from copy import copy
 import pygame
+
 
 class Snake:
     def __init__(self):
@@ -25,7 +39,7 @@ class Snake:
         self.tail: List[Vector] = [
             Vector(self.x_start - 30, self.y_start),
             Vector(self.x_start - 20, self.y_start),
-            Vector(self.x_start - 10, self.y_start)
+            Vector(self.x_start - 10, self.y_start),
         ]
         self.len += 3
 
@@ -49,7 +63,10 @@ class Snake:
         distance = 0
         head_buff = Vector(self.head.x, self.head.y)
 
-        while 0 <= head_buff.x <= PLAYABLE_AREA_WIDTH and 0 <= head_buff.y <= PLAYABLE_AREA_HEIGHT:
+        while (
+            0 <= head_buff.x <= PLAYABLE_AREA_WIDTH
+            and 0 <= head_buff.y <= PLAYABLE_AREA_HEIGHT
+        ):
             if head_buff.x == self.apple.pos.x and head_buff.y == self.apple.pos.y:
                 vision.is_apple = 1
 
@@ -64,12 +81,27 @@ class Snake:
         return vision
 
     def set_input(self):
-        directions = [LEFT_VECTOR, UP_VECTOR, RIGHT_VECTOR, DOWN_VECTOR, LEFT_UP_VECTOR, RIGHT_UP_VECTOR, RIGHT_DOWN_VECTOR, LEFT_DOWN_VECTOR]
-        self.visions = [self.check_dir_and_get_vision(direction) for direction in directions]
+        directions = [
+            LEFT_VECTOR,
+            UP_VECTOR,
+            RIGHT_VECTOR,
+            DOWN_VECTOR,
+            LEFT_UP_VECTOR,
+            RIGHT_UP_VECTOR,
+            RIGHT_DOWN_VECTOR,
+            LEFT_DOWN_VECTOR,
+        ]
+        self.visions = [
+            self.check_dir_and_get_vision(direction) for direction in directions
+        ]
         self.visions_array = self.visions_to_array()
 
     def visions_to_array(self) -> List[float]:
-        return [value for vision in self.visions for value in (vision.is_apple, vision.tail_dist, vision.wall_dist)]
+        return [
+            value
+            for vision in self.visions
+            for value in (vision.is_apple, vision.tail_dist, vision.wall_dist)
+        ]
 
     def set_velocity(self):
         output_array = self.DNA.get_output(self.visions_array)
@@ -90,14 +122,17 @@ class Snake:
 
     def check_if_dies(self) -> bool:
         return (
-            self.head.x + self.vel.x >= PLAYABLE_AREA_WIDTH or
-            self.head.x + self.vel.x < 0 or
-            self.head.y + self.vel.y < 0 or
-            self.head.y + self.vel.y >= PLAYABLE_AREA_HEIGHT
+            self.head.x + self.vel.x >= PLAYABLE_AREA_WIDTH
+            or self.head.x + self.vel.x < 0
+            or self.head.y + self.vel.y < 0
+            or self.head.y + self.vel.y >= PLAYABLE_AREA_HEIGHT
         )
 
     def check_if_eats(self) -> bool:
-        return self.head.x + self.vel.x == self.apple.pos.x and self.head.y + self.vel.y == self.apple.pos.y
+        return (
+            self.head.x + self.vel.x == self.apple.pos.x
+            and self.head.y + self.vel.y == self.apple.pos.y
+        )
 
     def grow(self):
         new_segment = Vector(self.head.x, self.head.y)
@@ -118,12 +153,18 @@ class Snake:
         self.life_time += 1
         self.time_left -= 1
 
-        if self.check_if_dies() or self.is_on_tail(self.head.x + self.vel.x, self.head.y + self.vel.y) or self.time_left < 0:
+        if (
+            self.check_if_dies()
+            or self.is_on_tail(self.head.x + self.vel.x, self.head.y + self.vel.y)
+            or self.time_left < 0
+        ):
             self.is_alive = False
             return
 
         self.clear_snake()
-        pygame.draw.rect(DISPLAY, pygame.Color("White"), (self.head.x, self.head.y, 10, 10))
+        pygame.draw.rect(
+            DISPLAY, pygame.Color("White"), (self.head.x, self.head.y, 10, 10)
+        )
 
         if self.check_if_eats():
             self.eat()
@@ -136,11 +177,17 @@ class Snake:
 
     def clear_snake(self):
         for segment in self.tail:
-            pygame.draw.rect(DISPLAY, pygame.Color("White"), (segment.x, segment.y, 10, 10))
-        pygame.draw.rect(DISPLAY, pygame.Color("White"), (self.head.x, self.head.y, 10, 10))
+            pygame.draw.rect(
+                DISPLAY, pygame.Color("White"), (segment.x, segment.y, 10, 10)
+            )
+        pygame.draw.rect(
+            DISPLAY, pygame.Color("White"), (self.head.x, self.head.y, 10, 10)
+        )
 
     def clear_apples(self):
-        pygame.draw.rect(DISPLAY, pygame.Color("White"), (self.apple.pos.x, self.apple.pos.y, 10, 10))
+        pygame.draw.rect(
+            DISPLAY, pygame.Color("White"), (self.apple.pos.x, self.apple.pos.y, 10, 10)
+        )
 
     def do_crossover(self, other_snake: Snake) -> Snake:
         child_snake = Snake()
@@ -156,9 +203,9 @@ class Snake:
         clone.is_alive = True
         return clone
 
-    def show(self):
+    def show(self, display):
         for segment in self.tail:
-            pygame.draw.rect(DISPLAY, pygame.Color("Black"), (segment.x, segment.y, 10, 10))
-        pygame.draw.rect(DISPLAY, pygame.Color("Black"), (self.head.x, self.head.y, 10, 10))
+            pygame.draw.rect(display, pygame.Color("Black"), (segment.x, segment.y, 10, 10))
+        pygame.draw.rect(display, pygame.Color("Black"), (self.head.x, self.head.y, 10, 10))
         pygame.display.update(0, 0, PLAYABLE_AREA_WIDTH, PLAYABLE_AREA_HEIGHT)
         self.apple.show()
